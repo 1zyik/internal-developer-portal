@@ -95,7 +95,7 @@ app:
               height: 4
 
 organization:
-  name: My Company
+  name: 1zyik Platform
 
 backend:
   # Used for enabling authentication, secret is shared by all backend plugins
@@ -163,8 +163,17 @@ techdocs:
 auth:
   # see https://backstage.io/docs/auth/ to learn about auth providers
   providers:
-    # See https://backstage.io/docs/auth/guest/provider
-    guest: {}
+    # See https://backstage.io/docs/auth/github/provider
+    github:
+      development:
+        clientId: ${AUTH_GITHUB_CLIENT_ID}
+        clientSecret: ${AUTH_GITHUB_CLIENT_SECRET}
+        signIn:
+          resolvers:
+            # TODO: drop dangerouslyAllowSignInWithoutUserInCatalog once GitHub org
+            # users are ingested into the catalog (Phase 1, task 5)
+            - resolver: usernameMatchingUserEntityName
+              dangerouslyAllowSignInWithoutUserInCatalog: true
   # see https://backstage.io/docs/ai/mcp-actions#client-id-metadata-documents
   # to learn more about client id metadata documents
   clientIdMetadataDocuments:

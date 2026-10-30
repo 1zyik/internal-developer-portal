@@ -33,6 +33,9 @@ spec:
           ui:options:
             allowedHosts:
               - github.com
+            # The GitHub App is only installed on the org, so it can't publish elsewhere
+            allowedOwners:
+              - 1zyik-platform
 
   # These steps are executed in the scaffolder backend, using data that we gathered
   # via the parameters above.

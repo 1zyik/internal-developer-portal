@@ -2562,19 +2562,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@backstage/plugin-auth-backend-module-guest-provider@npm:^0.2.24":
-  version: 0.2.24
-  resolution: "@backstage/plugin-auth-backend-module-guest-provider@npm:0.2.24"
-  dependencies:
-    "@backstage/backend-plugin-api": "npm:^1.11.0"
-    "@backstage/catalog-model": "npm:^1.10.2"
-    "@backstage/errors": "npm:^1.3.2"
-    "@backstage/plugin-auth-node": "npm:^0.7.7"
-    passport-oauth2: "npm:^1.7.0"
-  checksum: 10c0/7bf73f485335b5b7b8f9bcdb666d3b369ba690ce3493f49b990fde792dea7dbc0db80d206638164d48d64bc901c139640d62c4b985d38fdc96f3c4309b00209e
-  languageName: node
-  linkType: hard
-
 "@backstage/plugin-auth-backend@npm:^0.30.2":
   version: 0.30.2
   resolution: "@backstage/plugin-auth-backend@npm:0.30.2"
@@ -13236,7 +13223,6 @@ __metadata:
     "@backstage/plugin-app-backend": "npm:^0.5.19"
     "@backstage/plugin-auth-backend": "npm:^0.30.2"
     "@backstage/plugin-auth-backend-module-github-provider": "npm:^0.5.8"
-    "@backstage/plugin-auth-backend-module-guest-provider": "npm:^0.2.24"
     "@backstage/plugin-auth-node": "npm:^0.7.7"
     "@backstage/plugin-catalog-backend": "npm:^4.0.1"
     "@backstage/plugin-catalog-backend-module-logs": "npm:^0.1.27"
@@ -24317,7 +24303,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"passport-oauth2@npm:1.x.x, passport-oauth2@npm:^1.7.0":
+"passport-oauth2@npm:1.x.x":
   version: 1.8.0
   resolution: "passport-oauth2@npm:1.8.0"
   dependencies:

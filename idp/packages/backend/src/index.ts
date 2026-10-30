@@ -6,7 +6,13 @@
  * Happy hacking!
  */
 
+import { setDefaultAutoSelectFamilyAttemptTimeout } from 'node:net';
 import { createBackend } from '@backstage/backend-defaults';
+
+// Node's happy-eyeballs gives each resolved address only 250ms to connect, which is
+// less than the round trip to Neon (eu-central-1) from here, so every attempt is
+// abandoned with ETIMEDOUT. Allow more time per address.
+setDefaultAutoSelectFamilyAttemptTimeout(2000);
 
 const backend = createBackend();
 
@@ -26,8 +32,8 @@ backend.add(import('@backstage/plugin-techdocs-backend'));
 // auth plugin
 backend.add(import('@backstage/plugin-auth-backend'));
 // See https://backstage.io/docs/backend-system/building-backends/migrating#the-auth-plugin
-backend.add(import('@backstage/plugin-auth-backend-module-guest-provider'));
-// See https://backstage.io/docs/auth/guest/provider
+backend.add(import('@backstage/plugin-auth-backend-module-github-provider'));
+// See https://backstage.io/docs/auth/github/provider
 
 // catalog plugin
 backend.add(import('@backstage/plugin-catalog-backend'));
