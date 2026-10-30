@@ -11,11 +11,11 @@
 
 ## Phase 1: Backstage Core
 
-| S/N | Task Description                                           | Status | Remarks |
-| --- | ---------------------------------------------------------- | ------ | ------- |
-| 1   | Scaffold the app and run locally                           |        |         |
-| 2   | Provision PostgresDB and switch apps DB                    |        |         |
-| 3   | Create GitHub OAuth App and add to config                  |        |         |
-| 4   | Create GitHub App or PAT with `repo` and `workflow` scopes |        |         |
-| 5   | Configure Backstage Catalog and enable GitHub discovery    |        |         |
-| 6   | Commit changes to idp service                              |        |         |
+| S/N | Task Description                                           | Status             | Remarks                                                |
+| --- | ---------------------------------------------------------- | ------------------ | ------------------------------------------------------ |
+| 1   | Scaffold the app and run locally                           | :white_check_mark: | Backstage 1.56.0 in `idp/`, runs on Node 24 (`.nvmrc`) |
+| 2   | Provision PostgresDB and switch apps DB                    |                    |                                                        |
+| 3   | Create GitHub OAuth App and add to config                  |                    |                                                        |
+| 4   | Create GitHub App or PAT with `repo` and `workflow` scopes |                    |                                                        |
+| 5   | Configure Backstage Catalog and enable GitHub discovery    |                    |                                                        |
+| 6   | Commit changes to idp service                              |                    |                                                        |
