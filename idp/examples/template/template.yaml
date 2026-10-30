@@ -6,7 +6,7 @@ metadata:
   title: Example Node.js Template
   description: An example template for the scaffolder that creates a simple Node.js service
 spec:
-  owner: user:guest
+  owner: group:default/platform-team
   type: service
 
   # These parameters are used to generate the input form in the frontend, and are
@@ -75,7 +75,7 @@ spec:
       input:
         recipients: entity
         entityRefs:
-          - user:default/guest
+          - ${{ user.ref }}
         title: 'Template executed'
         info: 'Your template has been executed'
         severity: 'normal'

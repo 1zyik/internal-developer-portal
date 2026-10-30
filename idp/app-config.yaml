@@ -170,10 +170,8 @@ auth:
         clientSecret: ${AUTH_GITHUB_CLIENT_SECRET}
         signIn:
           resolvers:
-            # TODO: drop dangerouslyAllowSignInWithoutUserInCatalog once GitHub org
-            # users are ingested into the catalog (Phase 1, task 5)
+            # Users are ingested from the 1zyik-platform org, so only org members can sign in
             - resolver: usernameMatchingUserEntityName
-              dangerouslyAllowSignInWithoutUserInCatalog: true
   # see https://backstage.io/docs/ai/mcp-actions#client-id-metadata-documents
   # to learn more about client id metadata documents
   clientIdMetadataDocuments:
@@ -197,31 +195,28 @@ catalog:
   rules:
     - allow: [Component, System, API, Resource, Location]
   locations:
-    # Local example data, file locations are relative to the backend process, typically `packages/backend`
-    - type: file
-      target: ../../examples/entities.yaml
-
-    # Local example template
+    # Local example template, file locations are relative to the backend process, typically `packages/backend`
     - type: file
       target: ../../examples/template/template.yaml
       rules:
         - allow: [Template]
-
-    # Local example organizational data
-    - type: file
-      target: ../../examples/org.yaml
-      rules:
-        - allow: [User, Group]
-
-    ## Uncomment these lines to add more example data
-    # - type: url
-    #   target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/all.yaml
-
-    ## Uncomment these lines to add an example org
-    # - type: url
-    #   target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/acme-corp.yaml
-    #   rules:
-    #     - allow: [User, Group]
+  providers:
+    # See https://backstage.io/docs/integrations/github/discovery
+    github:
+      platformOrg:
+        organization: '1zyik-platform'
+        catalogPath: '/catalog-info.yaml'
+        schedule:
+          frequency: { minutes: 30 }
+          timeout: { minutes: 3 }
+    # See https://backstage.io/docs/integrations/github/org
+    githubOrg:
+      id: platform-org
+      githubUrl: https://github.com
+      orgs: ['1zyik-platform']
+      schedule:
+        frequency: { hours: 1 }
+        timeout: { minutes: 15 }
 
 kubernetes:
   # see https://backstage.io/docs/features/kubernetes/configuration for kubernetes configuration options

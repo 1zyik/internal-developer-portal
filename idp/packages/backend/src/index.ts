@@ -41,6 +41,11 @@ backend.add(
   import('@backstage/plugin-catalog-backend-module-scaffolder-entity-model'),
 );
 
+// Discovers catalog-info.yaml files in the GitHub org's repos
+backend.add(import('@backstage/plugin-catalog-backend-module-github'));
+// Ingests the GitHub org's members and teams as User and Group entities
+backend.add(import('@backstage/plugin-catalog-backend-module-github-org'));
+
 // See https://backstage.io/docs/features/software-catalog/configuration#subscribing-to-catalog-errors
 backend.add(import('@backstage/plugin-catalog-backend-module-logs'));
 

@@ -17,5 +17,5 @@
 | 2   | Provision PostgresDB and switch apps DB                    | :white_check_mark: | Neon direct endpoint (not pooler), schema per plugin   |
 | 3   | Create GitHub OAuth App and add to config                  | :white_check_mark: | GitHub-only sign-in, guest provider removed            |
 | 4   | Create GitHub App or PAT with `repo` and `workflow` scopes | :white_check_mark: | GitHub App installed on org (all repos)                |
-| 5   | Configure Backstage Catalog and enable GitHub discovery    |                    |                                                        |
+| 5   | Configure Backstage Catalog and enable GitHub discovery    | :white_check_mark: | Repo discovery + org users/teams, example data removed |
 | 6   | Commit changes to idp service                              |                    |                                                        |
