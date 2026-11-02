@@ -200,8 +200,9 @@ catalog:
       target: ../../examples/template/template.yaml
       rules:
         - allow: [Template]
-    - type: file
-      target: ../../templates/node-service/template.yaml
+    # Every template in the backstage-templates repo. New ones appear without a rebuild
+    - type: url
+      target: https://github.com/1zyik-platform/backstage-templates/blob/main/templates/*/template.yaml
       rules:
         - allow: [Template]
   providers:
