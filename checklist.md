@@ -22,19 +22,20 @@
 
 ## Phase 2: Templates
 
-All paths are under `idp/templates/node-service/`, inside the Docker build context so `file` locations also resolve in the image.
+All paths are under `idp/templates/node-service/`. The backend Dockerfile copies `templates/` so `file` locations also resolve in the image.
 
-| S/N | Task Description                                                                                                        | Status | Remarks                                                                           |
-| --- | ----------------------------------------------------------------------------------------------------------------------- | ------ | --------------------------------------------------------------------------------- |
-| 1   | Create the GitOps repo in `1zyik-platform`                                                                              |        | `1zyik-platform/gitops`, target of the PR step (task 4)                           |
-| 2   | `template.yaml`: inputs `name`, `owner`, `description`, `port`                                                          |        | `owner` via `OwnerPicker`, `allowedOwners: [1zyik-platform]` on `RepoUrlPicker`   |
-| 3   | `template.yaml` steps: `fetch:template` → `publish:github` → `catalog:register`                                         |        |                                                                                   |
-| 4   | `template.yaml` step: open a PR to the GitOps repo                                                                      |        | `publish:github:pull-request` adds an Argo CD `Application` at `apps/<name>.yaml` |
-| 5   | `skeleton/`: Node.js Express app with `/health` and `/metrics` (`prom-client`)                                          |        | Listens on `port`                                                                 |
-| 6   | `skeleton/Dockerfile`: multi-stage, non-root user                                                                       |        |                                                                                   |
-| 7   | `skeleton/catalog-info.yaml` with annotations `github.com/project-slug`, `backstage.io/techdocs-ref`, `argocd/app-name` |        |                                                                                   |
-| 8   | `skeleton/mkdocs.yml` and `skeleton/docs/index.md` for TechDocs                                                         |        | TechDocs builds in Docker (`runIn: docker`)                                       |
-| 9   | `skeleton/deploy/`: Helm chart                                                                                          |        | `port` input sets the container and Service ports                                 |
-| 10  | `skeleton/.github/workflows/ci.yaml`                                                                                    |        | Next phase                                                                        |
-| 11  | Register the template in `catalog.locations`                                                                            |        | `app-config.yaml` and `app-config.production.yaml`                                |
-| 12  | Test: create a service from the UI, confirm the repo exists and appears in the catalog                                  |        | Also check the GitOps PR, `/health` and `/metrics`                                |
+| S/N | Task Description                                                                                                        | Status             | Remarks                                                                                    |
+| --- | ----------------------------------------------------------------------------------------------------------------------- | ------------------ | ------------------------------------------------------------------------------------------ |
+| 1   | Create the GitOps repo in `1zyik-platform`                                                                              | :white_check_mark: | `1zyik-platform/gitops`, target of the PR step (task 4)                                    |
+| 2   | `template.yaml`: inputs `name`, `owner`, `description`, `port`                                                          | :white_check_mark: | `owner` via `OwnerPicker`; repo always created in `1zyik-platform`, so no `RepoUrlPicker`  |
+| 3   | `template.yaml` steps: `fetch:template` → `publish:github` → `catalog:register`                                         | :white_check_mark: |                                                                                            |
+| 4   | `template.yaml` step: open a PR to the GitOps repo                                                                      | :white_check_mark: | Built-in `publish:github:pull-request` adds an Argo CD `Application` at `apps/<name>.yaml` |
+| 5   | `skeleton/`: Node.js Express app with `/health` and `/metrics` (`prom-client`)                                          | :white_check_mark: | Listens on `port`; `/metrics` serves default Node metrics                                  |
+| 6   | `skeleton/Dockerfile`: multi-stage, non-root user                                                                       | :white_check_mark: | Runs as `node` (UID 1000)                                                                  |
+| 7   | `skeleton/catalog-info.yaml` with annotations `github.com/project-slug`, `backstage.io/techdocs-ref`, `argocd/app-name` | :white_check_mark: |                                                                                            |
+| 8   | `skeleton/mkdocs.yml` and `skeleton/docs/index.md` for TechDocs                                                         | :white_check_mark: | Docs build with the TechDocs image; Docs tab blocked by task 13                            |
+| 9   | `skeleton/deploy/`: Helm chart                                                                                          | :white_check_mark: | `port` input sets the container and Service ports; not yet deployed to a cluster           |
+| 10  | `skeleton/.github/workflows/ci.yaml`                                                                                    |                    | Next phase                                                                                 |
+| 11  | Register the template in `catalog.locations`                                                                            | :white_check_mark: | `app-config.yaml` and `app-config.production.yaml`                                         |
+| 12  | Test: create a service from the UI, confirm the repo exists and appears in the catalog                                  | :white_check_mark: | `hello-service`: repo, catalog entry and GitOps PR confirmed; PR left unmerged             |
+| 13  | Make the TechDocs build work on this host                                                                               |                    | `runIn: docker` fails under SELinux, see [LESSONS.md](LESSONS.md)                          |

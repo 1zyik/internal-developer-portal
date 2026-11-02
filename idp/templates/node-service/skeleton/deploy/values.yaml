@@ -1,0 +1,22 @@
+replicaCount: 1
+
+image:
+  repository: ghcr.io/1zyik-platform/${{ values.name }}
+  # Defaults to the chart's appVersion
+  tag: ''
+  pullPolicy: IfNotPresent
+
+# Packages for private repos are private, so pulling them needs a registry secret
+imagePullSecrets: []
+
+port: ${{ values.port }}
+
+service:
+  type: ClusterIP
+
+resources:
+  requests:
+    cpu: 50m
+    memory: 64Mi
+  limits:
+    memory: 128Mi

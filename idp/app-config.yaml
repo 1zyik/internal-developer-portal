@@ -200,6 +200,10 @@ catalog:
       target: ../../examples/template/template.yaml
       rules:
         - allow: [Template]
+    - type: file
+      target: ../../templates/node-service/template.yaml
+      rules:
+        - allow: [Template]
   providers:
     # See https://backstage.io/docs/integrations/github/discovery
     github:

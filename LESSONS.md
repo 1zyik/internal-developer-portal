@@ -18,3 +18,12 @@ _Nothing notable recorded._
 - **A GitHub App only works where it is installed.** Choosing the personal account (`1zyik`) as the repo owner failed with _"No token available for host: github.com"_ because the app is installed only on `1zyik-platform`. Templates now set `allowedOwners`.
 - **New GitHub App permissions must be accepted on the installation.** Saving them on the app only sends a request to the org owner; until it's accepted, tokens keep the old set (_"Resource not accessible by integration"_). Creating repos needs **Administration: write**. Pushing `.github/workflows/*` needs **Workflows**, which is a different permission from Actions.
 - **A generated repo's `catalog-info.yaml` is the source of truth.** Changing the template doesn't update repos it already created; existing repos have to be edited directly.
+
+## Phase 2: Templates
+
+- **TechDocs `runIn: docker` fails on Fedora with SELinux enforcing.** Backstage mounts its temp folders without a `:z` label, so the container can't read them (_"Path '/output' is not readable"_). The same build succeeds with `:z`, so the docs themselves are fine. Check the host's security settings when a container can't read a mounted folder.
+- **The Docker build context isn't enough for `file` locations.** The backend Dockerfile copies only what it lists, so `templates/` needs its own `COPY` line or the template loads locally but goes missing in the image.
+- **Editing `catalog.locations` while the backend runs can leave a false error.** A new location failed with _"not of an allowed kind for that location"_ even though its rules allowed `Template`. It cleared after a backend restart.
+- **Keep each `fetch:template` in its own `targetPath`.** All steps share one workspace, so without separate folders `publish:github` would also push the GitOps manifest to the service repo.
+- **Only `${{ }}` is substituted in a skeleton.** Helm's `{{ }}` passes through untouched, but GitHub Actions' `${{ }}` doesn't, so workflow files will need `copyWithoutTemplating`. Prettier can't parse Helm templates either, so skeletons are in `.prettierignore`.
+- **A skeleton needs its own lockfile for `npm ci`.** It's generated once, with the name fields replaced by `${{ values.name }}`.

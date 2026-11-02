@@ -1,0 +1,17 @@
+{
+  "name": "${{ values.name }}",
+  "version": "0.1.0",
+  "description": ${{ values.description | dump }},
+  "private": true,
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "engines": {
+    "node": ">=24"
+  },
+  "dependencies": {
+    "express": "^5.3.0",
+    "prom-client": "^15.1.3"
+  }
+}

@@ -39,3 +39,7 @@ catalog:
       target: ./examples/template/template.yaml
       rules:
         - allow: [Template]
+    - type: file
+      target: ./templates/node-service/template.yaml
+      rules:
+        - allow: [Template]

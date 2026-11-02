@@ -1,0 +1,115 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+# https://backstage.io/docs/features/software-catalog/descriptor-format#kind-template
+kind: Template
+metadata:
+  name: node-service
+  title: Node.js Service
+  description: Creates an Express service with health and metrics endpoints, a Dockerfile, TechDocs and a Helm chart, and opens a PR to deploy it through the GitOps repo
+  tags:
+    - nodejs
+    - express
+    - helm
+spec:
+  owner: group:default/platform-team
+  type: service
+
+  parameters:
+    - title: Service details
+      required:
+        - name
+        - owner
+        - description
+        - port
+      properties:
+        name:
+          title: Name
+          type: string
+          description: Used for the GitHub repo, catalog entity and Kubernetes resources
+          ui:field: EntityNamePicker
+          ui:autofocus: true
+          # Must also be a valid Kubernetes name and Helm release name
+          pattern: '^[a-z]([a-z0-9-]*[a-z0-9])?$'
+          maxLength: 53
+        owner:
+          title: Owner
+          type: string
+          description: Team that owns this service
+          ui:field: OwnerPicker
+          ui:options:
+            catalogFilter:
+              - kind: Group
+        description:
+          title: Description
+          type: string
+          description: What this service does
+        port:
+          title: Port
+          type: integer
+          description: Port the service listens on
+          default: 3000
+          # The container runs as non-root, which can't bind to lower ports
+          minimum: 1024
+          maximum: 65535
+
+  steps:
+    # Each fetch goes to its own subdirectory so that publishing the service
+    # doesn't also push the GitOps manifest to the service repo
+    - id: fetch-service
+      name: Generate service
+      action: fetch:template
+      input:
+        url: ./skeleton
+        targetPath: ./service
+        values:
+          name: ${{ parameters.name }}
+          owner: ${{ parameters.owner }}
+          description: ${{ parameters.description }}
+          port: ${{ parameters.port }}
+
+    - id: publish
+      name: Create repository
+      action: publish:github
+      input:
+        description: ${{ parameters.description }}
+        repoUrl: github.com?owner=1zyik-platform&repo=${{ parameters.name }}
+        sourcePath: ./service
+        defaultBranch: main
+        repoVisibility: private
+
+    - id: register
+      name: Register in catalog
+      action: catalog:register
+      input:
+        repoContentsUrl: ${{ steps['publish'].output.repoContentsUrl }}
+        catalogInfoPath: /catalog-info.yaml
+
+    - id: fetch-gitops
+      name: Generate GitOps manifest
+      action: fetch:template
+      input:
+        url: ./gitops-skeleton
+        targetPath: ./gitops
+        values:
+          name: ${{ parameters.name }}
+
+    - id: gitops-pr
+      name: Open GitOps pull request
+      action: publish:github:pull-request
+      input:
+        repoUrl: github.com?owner=1zyik-platform&repo=gitops
+        branchName: add-${{ parameters.name }}
+        title: Add ${{ parameters.name }}
+        description: Adds the Argo CD Application for ${{ steps['publish'].output.remoteUrl }}
+        commitMessage: Add ${{ parameters.name }}
+        sourcePath: ./gitops
+        targetPath: apps
+
+  output:
+    links:
+      - title: Repository
+        url: ${{ steps['publish'].output.remoteUrl }}
+      - title: GitOps pull request
+        url: ${{ steps['gitops-pr'].output.remoteUrl }}
+      - title: Open in catalog
+        icon: catalog
+        entityRef: ${{ steps['register'].output.entityRef }}

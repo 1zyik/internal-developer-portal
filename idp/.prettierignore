@@ -2,3 +2,5 @@ dist
 dist-types
 coverage
 .vscode
+templates/*/skeleton
+templates/*/gitops-skeleton
