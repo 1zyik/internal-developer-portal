@@ -8,12 +8,12 @@ Backstage · GitHub ([1zyik-platform](https://github.com/1zyik-platform)) · Git
 
 ## Progress
 
-| Phase                 | Status         |
-| --------------------- | -------------- |
-| 0. Prerequisites      | ✅ Done        |
-| 1. Backstage Core     | ✅ Done        |
-| 2. Templates          | ✅ Done        |
-| 3. CI/CD and Security | 🚧 In progress |
+| Phase                 | Status  |
+| --------------------- | ------- |
+| 0. Prerequisites      | ✅ Done |
+| 1. Backstage Core     | ✅ Done |
+| 2. Templates          | ✅ Done |
+| 3. CI/CD and Security | ✅ Done |
 
 See [checklist.md](checklist.md) for task-level details and [LESSONS.md](LESSONS.md) for issues hit along the way.
 
