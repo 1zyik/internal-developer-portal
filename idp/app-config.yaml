@@ -168,6 +168,10 @@ auth:
       development:
         clientId: ${AUTH_GITHUB_CLIENT_ID}
         clientSecret: ${AUTH_GITHUB_CLIENT_SECRET}
+        # node-service publishes with the signed-in user's token, because GHCR won't let a
+        # GitHub App create an image package. Asking at sign-in guarantees the GitHub prompt
+        # appears. read:org and gist are here because the repo picker always requests them
+        additionalScopes: [repo, workflow, read:org, gist]
         signIn:
           resolvers:
             # Users are ingested from the 1zyik-platform org, so only org members can sign in

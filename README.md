@@ -4,15 +4,16 @@ A self-hosted Internal Developer Portal built on [Backstage](https://backstage.i
 
 ## Stack
 
-Backstage · GitHub ([1zyik-platform](https://github.com/1zyik-platform)) · Postgres (Neon) · Docker · Kubernetes (kind/k3d) · Helm · Terraform · Oracle Cloud
+Backstage · GitHub ([1zyik-platform](https://github.com/1zyik-platform)) · GitHub Actions · GHCR · Postgres (Neon) · Docker · Kubernetes (kind/k3d) · Helm · Terraform · Oracle Cloud
 
 ## Progress
 
-| Phase             | Status  |
-| ----------------- | ------- |
-| 0. Prerequisites  | ✅ Done |
-| 1. Backstage Core | ✅ Done |
-| 2. Templates      | ✅ Done |
+| Phase                 | Status         |
+| --------------------- | -------------- |
+| 0. Prerequisites      | ✅ Done        |
+| 1. Backstage Core     | ✅ Done        |
+| 2. Templates          | ✅ Done        |
+| 3. CI/CD and Security | 🚧 In progress |
 
 See [checklist.md](checklist.md) for task-level details and [LESSONS.md](LESSONS.md) for issues hit along the way.
 
@@ -26,7 +27,9 @@ Requires Node 24, Yarn, MkDocs (`pipx install mkdocs && pipx inject mkdocs mkdoc
    - `auth.providers.github.development`: OAuth App `clientId` and `clientSecret`, callback `http://localhost:7007/api/auth/github/handler/frame`
    - `techdocs.generator.runIn: local`: Docker builds fail on hosts with SELinux enforcing
    - `integrations.github[0].apps`: `$include` the credentials file from `yarn backstage-cli create-github-app 1zyik-platform`, with the app installed on the org (all repos). It needs Administration, Contents, Pull requests and Workflows (write), plus Members and Commit statuses (read)
-3. Run: `yarn start`, open http://localhost:3000 and sign in with GitHub (org members only)
+3. Run: `yarn start`, open http://localhost:3000 and sign in with GitHub (org members only). Sign-in asks for `repo` and `workflow`, because templates publish as you
+
+For CI to update `gitops`, generated services need a GitHub App installed on `gitops` only (Contents: write), with `GITOPS_APP_CLIENT_ID` as an org variable and `GITOPS_APP_PRIVATE_KEY` as an org secret, both available to public repos.
 
 ## License
 
